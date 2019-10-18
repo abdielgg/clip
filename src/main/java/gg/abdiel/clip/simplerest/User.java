@@ -1,8 +1,24 @@
 package gg.abdiel.clip.simplerest;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table(name = "user")
 public class User {
+	@Id
+	@GeneratedValue(generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+	@Column
 	private String id;
-	private String Name;
+	@Column
+	private String name;
+	@Column
 	private String email;
 
 	public String getId() {
@@ -14,11 +30,11 @@ public class User {
 	}
 
 	public String getName() {
-		return Name;
+		return name;
 	}
 
 	public void setName(String name) {
-		Name = name;
+		this.name = name;
 	}
 
 	public String getEmail() {
