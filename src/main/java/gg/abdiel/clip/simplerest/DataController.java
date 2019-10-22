@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import gg.abdiel.clip.simplerest.entity.Transaction;
+
 @RestController
 public class DataController {
 
