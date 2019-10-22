@@ -13,58 +13,69 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "transaction")
 public class Transaction {
-	@Id
-	@GeneratedValue(generator = "UUIDGenerator")
+    @Id
+    @GeneratedValue(generator = "UUIDGenerator")
 //	@GenericGenerator(name = "system-uuid", strategy = "uuid")
-	@Column
-	private String id;
-	@Column
-	private double amount;
-	@Column
-	private String description;
-	@Column
-	private LocalDateTime date;
-	@ManyToOne(optional=false)
-    @JoinColumn(name="user_id",referencedColumnName="id")
-	private User user;
-	
-	
-	
-	public Transaction(String id, String descrption) {
-		super();
-		this.id = id;
-		this.description = descrption;
-	}
+    @Column
+    private String id;
 
-	public String getId() {
-		return id;
-	}
+    @Column
+    private double amount;
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    @Column
+    private String description;
 
-	public double getAmount() {
-		return amount;
-	}
+    @Column
+    private LocalDateTime date;
 
-	public void setAmount(double amount) {
-		this.amount = amount;
-	}
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-	public String getDescrption() {
-		return description;
-	}
+    public Transaction(String id, String description) {
+        super();
+        this.id = id;
+        this.description = description;
+    }
 
-	public void setDescrption(String descrption) {
-		this.description = descrption;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public LocalDateTime getDate() {
-		return date;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }
