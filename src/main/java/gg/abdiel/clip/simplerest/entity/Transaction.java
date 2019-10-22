@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "transaction")
-public class Transaction {
+public class Transaction implements Cloneable {
     @Id
     @GeneratedValue(generator = "UUIDGenerator")
 //	@GenericGenerator(name = "system-uuid", strategy = "uuid")
@@ -31,6 +31,10 @@ public class Transaction {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
+    public Transaction() {
+        super();
+    }
 
     public Transaction(String id, String description) {
         super();
@@ -76,6 +80,11 @@ public class Transaction {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public Transaction clone() throws CloneNotSupportedException {
+        return (Transaction) super.clone();
     }
 
 }

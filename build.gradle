@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.6.RELEASE")
-        classpath("io.freefair.gradle:lombok-plugin:4.1.2")
+//        classpath("io.freefair.gradle:lombok-plugin:4.1.2")
     }
 }
 
