@@ -29,8 +29,16 @@ public class RestfulController {
         Transaction tr = new Transaction();
         tr.setId(transactionId);
         tr.setUser(u);
+        
+        EntityManager em = emf.createEntityManager();
+        Transaction resTr = em.find(Transaction.class, transactionId);
+        em.close();
+        
+        if (resTr == null) {
+            return new ResponseEntity<Transaction>(tr, NOT_FOUND);
+        }
 
-        return new ResponseEntity<Transaction>(tr, OK);
+        return new ResponseEntity<Transaction>(resTr, OK);
     }
 
     @RequestMapping("/hello")
@@ -44,7 +52,7 @@ public class RestfulController {
     }
 
     @RequestMapping(path = "/transaction", method = POST)
-    public ResponseEntity<Transaction> update(
+    public ResponseEntity<Transaction> save(
             @RequestParam(value = "userId") String userId,
             @RequestBody Transaction transaction)
                     throws CloneNotSupportedException {
@@ -63,7 +71,7 @@ public class RestfulController {
     }
 
     @RequestMapping(path = "/user", method = POST)
-    public ResponseEntity<User> update(@RequestBody User user)
+    public ResponseEntity<User> save(@RequestBody User user)
             throws CloneNotSupportedException {
         User u = user.clone();
 
