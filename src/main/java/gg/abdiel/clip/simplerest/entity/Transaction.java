@@ -1,5 +1,6 @@
 package gg.abdiel.clip.simplerest.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -12,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "transaction")
-public class Transaction implements Cloneable {
+public class Transaction implements Cloneable, Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(generator = "UUIDGenerator")
 //	@GenericGenerator(name = "system-uuid", strategy = "uuid")

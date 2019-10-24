@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan
-@EnableJpaRepositories(basePackages = "gg.abdiel.clip.simplerest.repo.*")
-@EntityScan(basePackages = "gg.abdiel.clip.simplerest.entity.*")
+@EnableJpaRepositories(basePackages = "gg.abdiel.clip.simplerest.repo")
+@EntityScan(basePackages = "gg.abdiel.clip.simplerest.entity")
 public class Application {
 
     public static void main(String[] args) {
