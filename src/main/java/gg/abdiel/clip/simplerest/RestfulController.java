@@ -29,13 +29,15 @@ public class RestfulController {
         Transaction tr = new Transaction();
         tr.setId(transactionId);
         tr.setUser(u);
-        
+
         EntityManager em = emf.createEntityManager();
         Transaction resTr = em.find(Transaction.class, transactionId);
         em.close();
-        
-        if (resTr == null) {
-            return new ResponseEntity<Transaction>(tr, NOT_FOUND);
+
+        if (resTr == null || !resTr.getUser().getId().equals(userId)) {
+            resTr = new Transaction();
+            resTr.setDescription("Entity Not Found");
+            return new ResponseEntity<Transaction>(resTr, NOT_FOUND);
         }
 
         return new ResponseEntity<Transaction>(resTr, OK);

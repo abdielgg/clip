@@ -1,7 +1,7 @@
 package gg.abdiel.clip.simplerest.entity;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.sql.Date;
 
 import javax.persistence.*;
 
@@ -13,8 +13,10 @@ public class Transaction implements Cloneable, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+//    @GeneratedValue(generator = "system-uuid")
+//    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column
     private String id;
 
@@ -25,7 +27,7 @@ public class Transaction implements Cloneable, Serializable {
     private String description;
 
     @Column
-    private LocalDateTime date;
+    private Date date;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -65,11 +67,11 @@ public class Transaction implements Cloneable, Serializable {
         this.description = description;
     }
 
-    public LocalDateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

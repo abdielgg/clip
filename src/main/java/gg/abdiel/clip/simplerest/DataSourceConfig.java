@@ -18,7 +18,7 @@ public class DataSourceConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource);
-        // em.setMappingResources("");
+        //em.setMappingResources("");
         factory.setPackagesToScan(  "gg.abdiel.clip.simplerest.entity",
                                     "gg.abdiel.clip.simplerest.repo");
 
@@ -50,7 +50,7 @@ public class DataSourceConfig {
     }
 
     //@Bean
-    //]public LocalSessionFactoryBean sessionFactory() {
+    //public LocalSessionFactoryBean sessionFactory() {
     //LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
     //sessionFactory.setDataSource(getDataSource());
     //return sessionFactory;

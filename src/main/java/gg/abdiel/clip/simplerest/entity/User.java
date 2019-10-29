@@ -2,13 +2,10 @@ package gg.abdiel.clip.simplerest.entity;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
+
 
 @Entity
 @Table(name = "user")
@@ -16,10 +13,9 @@ public class User implements Cloneable, Serializable{
     private static final long serialVersionUID = 1L;
  
     @Id
-//  @GeneratedValue(generator = "UUID")
-//  @GeneratedValue(generator = "UUIDGenerator")
-    @GeneratedValue(generator = "system-uuid")
-	@GenericGenerator(name = "system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+//  @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column
     private String id;
 
