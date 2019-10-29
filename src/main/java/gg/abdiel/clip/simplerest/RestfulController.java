@@ -3,36 +3,57 @@ package gg.abdiel.clip.simplerest;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
+import java.util.List;
+
+import javax.persistence.*;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import gg.abdiel.clip.simplerest.entity.Transaction;
-import gg.abdiel.clip.simplerest.entity.User;
+import gg.abdiel.clip.simplerest.entity.*;
 
 @RestController
 public class RestfulController {
 
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DataSourceConfig.class);
-    EntityManagerFactory emf = context.getBean(EntityManagerFactory.class);
+    EntityManagerFactory factory = context.getBean(EntityManagerFactory.class);
 
+    @RequestMapping(path = "/transaction", method = GET)
+    public ResponseEntity<Transaction> get() {
+        Transaction tr = new Transaction();
+        
+        return new ResponseEntity<Transaction>(tr, OK);
+    }
+
+    @RequestMapping(path = "/transactions", method = GET)
+    public ResponseEntity<List<Transaction>> get(
+            @RequestParam(value = "userId") String userId) {
+
+        EntityManager manager = factory.createEntityManager();
+
+        TypedQuery<Transaction> query = manager
+                .createQuery("Select tr from Transaction tr join tr.user usr where usr.id = :userId", Transaction.class)
+                .setParameter("userId", userId);
+        List<Transaction> resultList = query.getResultList();
+
+        return new ResponseEntity<List<Transaction>>(resultList, OK);
+    }
+    
     @RequestMapping(path = "/transaction", method = GET)
     public ResponseEntity<Transaction> get(
             @RequestParam(value = "userId") String userId,
-            @RequestParam(value = "transactionId") String transactionId)
-                    throws CloneNotSupportedException {
+            @RequestParam(value = "transactionId") String transactionId) {
+
         User u = new User();
         u.setId(userId);
         Transaction tr = new Transaction();
         tr.setId(transactionId);
         tr.setUser(u);
 
-        EntityManager em = emf.createEntityManager();
-        Transaction resTr = em.find(Transaction.class, transactionId);
-        em.close();
+        EntityManager manager = factory.createEntityManager();
+        Transaction resTr = manager.find(Transaction.class, transactionId);
+        manager.close();
 
         if (resTr == null || !resTr.getUser().getId().equals(userId)) {
             resTr = new Transaction();
@@ -45,6 +66,7 @@ public class RestfulController {
 
     @RequestMapping("/hello")
     public ResponseEntity<Transaction> hello() {
+
         Transaction tr = new Transaction();
         tr.setId("uniqueId");
         tr.setAmount(3.1416);
@@ -58,26 +80,29 @@ public class RestfulController {
             @RequestParam(value = "userId") String userId,
             @RequestBody Transaction transaction)
                     throws CloneNotSupportedException {
-        User u = new User();
-        u.setId(userId);
+
+        User user = new User();
+        user.setId(userId);
         Transaction tr = transaction.clone();
-        tr.setUser(u);
+        tr.setUser(user);
         
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(tr);
-        em.getTransaction().commit();
-        em.close();
+        EntityManager manager = factory.createEntityManager();
+        manager.getTransaction().begin();
+        manager.persist(tr);
+        manager.getTransaction().commit();
+        manager.close();
 
         return new ResponseEntity<Transaction>(tr, CREATED);
     }
 
     @RequestMapping(path = "/user", method = POST)
-    public ResponseEntity<User> save(@RequestBody User user)
-            throws CloneNotSupportedException {
+    public ResponseEntity<User> save(
+            @RequestBody User user)
+                    throws CloneNotSupportedException {
+
         User u = user.clone();
 
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
         em.persist(u);
         em.getTransaction().commit();
