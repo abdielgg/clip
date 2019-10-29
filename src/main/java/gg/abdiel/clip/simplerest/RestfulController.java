@@ -19,10 +19,20 @@ public class RestfulController {
     AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DataSourceConfig.class);
     EntityManagerFactory factory = context.getBean(EntityManagerFactory.class);
 
-    @RequestMapping(path = "/transaction", method = GET)
+    @RequestMapping(path = "/transaction/random", method = GET)
     public ResponseEntity<Transaction> get() {
         Transaction tr = new Transaction();
-        
+
+        EntityManager manager = factory.createEntityManager();
+
+        TypedQuery<Transaction> query = manager
+                .createQuery("select tr from Transaction tr order by rand()", Transaction.class)
+                .setMaxResults(1);
+
+        tr = query.getSingleResult();
+
+        manager.close();
+
         return new ResponseEntity<Transaction>(tr, OK);
     }
 
@@ -33,9 +43,11 @@ public class RestfulController {
         EntityManager manager = factory.createEntityManager();
 
         TypedQuery<Transaction> query = manager
-                .createQuery("Select tr from Transaction tr join tr.user usr where usr.id = :userId", Transaction.class)
+                .createQuery("select tr from Transaction tr join tr.user usr where usr.id = :userId", Transaction.class)
                 .setParameter("userId", userId);
         List<Transaction> resultList = query.getResultList();
+        
+        manager.close();
 
         return new ResponseEntity<List<Transaction>>(resultList, OK);
     }
@@ -60,11 +72,13 @@ public class RestfulController {
             resTr.setDescription("Entity Not Found");
             return new ResponseEntity<Transaction>(resTr, NOT_FOUND);
         }
+        
+        manager.close();
 
         return new ResponseEntity<Transaction>(resTr, OK);
     }
 
-    @RequestMapping("/hello")
+    @RequestMapping("/transaction/hello")
     public ResponseEntity<Transaction> hello() {
 
         Transaction tr = new Transaction();
@@ -102,11 +116,11 @@ public class RestfulController {
 
         User u = user.clone();
 
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
-        em.persist(u);
-        em.getTransaction().commit();
-        em.close();
+        EntityManager manager = factory.createEntityManager();
+        manager.getTransaction().begin();
+        manager.persist(u);
+        manager.getTransaction().commit();
+        manager.close();
 
         return new ResponseEntity<User>(u, CREATED);
     }
